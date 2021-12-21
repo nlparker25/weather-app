@@ -1,0 +1,53 @@
+.container {
+  margin: 20px auto;
+  padding: 50px 80px;
+  display: block;
+  text-align: center;
+  background: radial-gradient(
+    592px at 48.2% 50%,
+    rgba(255, 255, 249, 0.6) 0%,
+    rgb(160, 199, 254) 74.6%
+  );
+  max-width: 70%;
+  border-radius: 10px;
+  color: #11305b;
+  font-family: "Roboto Slab", serif;
+}
+
+.heading,
+.col {
+  border: 2px solid #11305b;
+  border-radius: 5px;
+  display: block;
+}
+
+.heading {
+  padding: 10px;
+  margin: 0 auto;
+  max-width: 50%;
+}
+
+.forecast {
+  padding: 20px;
+}
+
+.col {
+  margin: 5px;
+  padding: 10px;
+  transition: all 200ms ease-in-out;
+}
+
+.refresh {
+  display: block;
+  text-align: center;
+}
+
+.col:hover {
+  border: solid 2px #f8fbfb;
+}
+
+button.geolocate-button {
+  margin: 10px auto;
+  font-size: 13px;
+  border-radius: 3px;
+}
