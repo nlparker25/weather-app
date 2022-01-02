@@ -64,3 +64,11 @@ button.geolocate-button {
 a:hover {
   text-decoration: underline;
 }
+
+#day-zero-description {
+  text-transform: capitalize;
+}
+
+.weather-details {
+  font-size: 14px;
+}

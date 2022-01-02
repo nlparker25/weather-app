@@ -16,11 +16,16 @@
   <body>
     <div class="container">
       <div class="heading">
+        <img src="https://openweathermap.org/img/wn/03d@2x.png" id="day-zero-icon" />
         <h1 id=city-name>Atlanta</h1>
-        <h2><span id = "full-temperature">73°F</span>
+        <h2><span id = "day-zero-temperature">73°F</span></h2>
+          <div class="weather-details">
+          <span id="day-zero-description">Cloudy</span>
           <br>
-          ☁️</h2>
-          
+          Wind speed: <span id="day-zero-wind-speed">10 m/h</span>
+          <br>
+          Humidity: <span id="day-zero-humidity">50%</span>
+          </div>
       </div>
         <div class="row forecast">
           <div class="col day-plus-one">
@@ -41,7 +46,7 @@
             <br />
             💧 0%
           </div>
-           <div class="col day=plus-three">
+           <div class="col day-plus-three">
             <strong>Sunday 11/21</strong>
             <br />
             62°F / 44°F

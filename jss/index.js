@@ -29,17 +29,33 @@ function changeCity(event) {
   event.preventDefault();
   let currentCity = document.querySelector("#current-city");
   let apiKey = "5515460eda5af0ed162ca73d5a84293d";
-  let unit = "imperial";
+  let unit = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${currentCity.value}&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(showTemperature);
+  console.log(apiUrl);
 }
 
 function showTemperature(response) {
   let temperature = Math.round(response.data.main.temp);
+  let weatherDescription = response.data.weather[0].description;
+  let weatherIcon = response.data.weather[0].icon;
+  let windSpeed = response.data.wind.speed;
+  let humidity = response.data.main.humidity;
   let city = response.data.name;
   let heading = document.querySelector("#city-name");
-  let temperatureH2 = document.querySelector("#full-temperature");
-  temperatureH2.innerHTML = `${temperature}°F`;
+  let temperatureH2 = document.querySelector("#day-zero-temperature");
+  let weatherDescriptionData = document.querySelector("#day-zero-description");
+  let weatherIconData = document.querySelector("#day-zero-icon");
+  let windSpeedData = document.querySelector("#day-zero-wind-speed");
+  let humidityData = document.querySelector("#day-zero-humidity");
+  temperatureH2.innerHTML = `${temperature}°C`;
+  weatherDescriptionData.innerHTML = `${weatherDescription}`;
+  weatherIconData.setAttribute(
+    "src",
+    `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`
+  );
+  windSpeedData.innerHTML = `${windSpeed} km/h`;
+  humidityData.innerHTML = `${humidity}%`;
   heading.innerHTML = city;
 }
 
