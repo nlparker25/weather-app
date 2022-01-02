@@ -32,7 +32,6 @@ function changeCity(event) {
   let unit = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${currentCity.value}&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(showTemperature);
-  console.log(apiUrl);
 }
 
 function showTemperature(response) {
