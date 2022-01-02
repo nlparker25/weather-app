@@ -72,3 +72,18 @@ a:hover {
 .weather-details {
   font-size: 14px;
 }
+
+.unit-conversion {
+  font-size: 13px;
+}
+
+.active {
+  color: #11305b;
+  cursor: default;
+  text-decoration: none;
+}
+
+.active:hover {
+  text-decoration: none;
+  color: #11305b;
+}

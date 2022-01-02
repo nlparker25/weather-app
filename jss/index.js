@@ -36,7 +36,7 @@ function changeCity(event) {
 }
 
 function showTemperature(response) {
-  let temperature = Math.round(response.data.main.temp);
+  cTemperature = Math.round(response.data.main.temp);
   let weatherDescription = response.data.weather[0].description;
   let weatherIcon = response.data.weather[0].icon;
   let windSpeed = response.data.wind.speed;
@@ -48,7 +48,7 @@ function showTemperature(response) {
   let weatherIconData = document.querySelector("#day-zero-icon");
   let windSpeedData = document.querySelector("#day-zero-wind-speed");
   let humidityData = document.querySelector("#day-zero-humidity");
-  temperatureH2.innerHTML = `${temperature}°C`;
+  temperatureH2.innerHTML = `${cTemperature}`;
   weatherDescriptionData.innerHTML = `${weatherDescription}`;
   weatherIconData.setAttribute(
     "src",
@@ -78,3 +78,28 @@ function handlePosition(position) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(showTemperature);
 }
+
+function convertToF(event) {
+  event.preventDefault();
+  let fTemperature = Math.round((cTemperature * 9) / 5 + 32);
+  let temperatureH2 = document.querySelector("#day-zero-temperature");
+  cConversion.classList.remove("active");
+  fConversion.classList.add("active");
+  temperatureH2.innerHTML = `${fTemperature}`;
+}
+
+function revertToC(event) {
+  event.preventDefault();
+  let temperatureH2 = document.querySelector("#day-zero-temperature");
+  cConversion.classList.add("active");
+  fConversion.classList.remove("active");
+  temperatureH2.innerHTML = cTemperature;
+}
+
+let fConversion = document.querySelector("#f-conversion");
+fConversion.addEventListener("click", convertToF);
+
+let cTemperature = null;
+
+let cConversion = document.querySelector("#c-conversion");
+cConversion.addEventListener("click", revertToC);
