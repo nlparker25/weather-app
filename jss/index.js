@@ -25,6 +25,27 @@ function currentTime(date) {
 let currentDateTime = document.querySelector("#current-date");
 currentDateTime.innerHTML = currentTime(new Date());
 
+function displayForecast() {
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row forecast">`;
+  let days = ["Friday", "Saturday", "Sunday", "Monday", "Tuesday"];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `<div class="col day-forecast">
+            <img src="https://openweathermap.org/img/wn/03d@2x.png" id="day-forecast-icon" height="50" />
+            <br>
+           <strong>${day}</strong> 
+            <br>
+           <span class="high-temp" id="forecast-high-temp">10°C</span> | <span class="low-temp" id="forecast-low-temp">7°C</span>
+            <br>
+          </div>`;
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
 function changeCity(event) {
   event.preventDefault();
   let currentCity = document.querySelector("#current-city");
@@ -102,3 +123,5 @@ let cTemperature = null;
 
 let cConversion = document.querySelector("#c-conversion");
 cConversion.addEventListener("click", revertToC);
+
+displayForecast();
