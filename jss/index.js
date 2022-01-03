@@ -25,27 +25,6 @@ function currentTime(date) {
 let currentDateTime = document.querySelector("#current-date");
 currentDateTime.innerHTML = currentTime(new Date());
 
-function displayForecast() {
-  let forecastElement = document.querySelector("#forecast");
-
-  let forecastHTML = `<div class="row forecast">`;
-  let days = ["Friday", "Saturday", "Sunday", "Monday", "Tuesday"];
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `<div class="col day-forecast">
-            <img src="https://openweathermap.org/img/wn/03d@2x.png" id="day-forecast-icon" height="50" />
-            <br>
-           <strong>${day}</strong> 
-            <br>
-           <span class="high-temp" id="forecast-high-temp">10°C</span> | <span class="low-temp" id="forecast-low-temp">7°C</span>
-            <br>
-          </div>`;
-  });
-  forecastHTML = forecastHTML + `</div>`;
-  forecastElement.innerHTML = forecastHTML;
-}
-
 function changeCity(event) {
   event.preventDefault();
   let currentCity = document.querySelector("#current-city");
@@ -77,6 +56,50 @@ function showTemperature(response) {
   windSpeedData.innerHTML = `${windSpeed} km/h`;
   humidityData.innerHTML = `${humidity}%`;
   heading.innerHTML = city;
+  getForecast(response.data.coord);
+}
+
+function getForecast(coordinates) {
+  let apiKey = "5515460eda5af0ed162ca73d5a84293d";
+  let unit = "metric";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=${unit}`;
+  axios.get(apiUrl).then(displayForecast);
+  console.log(apiUrl);
+}
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row forecast">`;
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col day-forecast">
+            <img src="https://openweathermap.org/img/wn/${
+              forecastDay.weather[0].icon
+            }@2x.png" id="day-forecast-icon" height="50" />
+            <br>
+           <strong>${formatDay(forecastDay.dt)}</strong> 
+            <br>
+           <span class="high-temp" id="forecast-high-temp">${Math.round(
+             forecastDay.temp.max
+           )}°C</span> | <span class="low-temp" id="forecast-low-temp">${Math.round(
+          forecastDay.temp.min
+        )}°C</span>
+            <br>
+          </div>`;
+    }
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
 }
 
 let changeCityForm = document.querySelector("#change-city");
@@ -123,5 +146,3 @@ let cTemperature = null;
 
 let cConversion = document.querySelector("#c-conversion");
 cConversion.addEventListener("click", revertToC);
-
-displayForecast();
