@@ -25,11 +25,18 @@ function currentTime(date) {
 let currentDateTime = document.querySelector("#current-date");
 currentDateTime.innerHTML = currentTime(new Date());
 
+function search(searchCity) {
+  let apiKey = "5515460eda5af0ed162ca73d5a84293d";
+  let unit = "imperial";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchCity}&appid=${apiKey}&units=${unit}`;
+  axios.get(apiUrl).then(showTemperature);
+}
+
 function changeCity(event) {
   event.preventDefault();
   let currentCity = document.querySelector("#current-city");
   let apiKey = "5515460eda5af0ed162ca73d5a84293d";
-  let unit = "metric";
+  let unit = "imperial";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${currentCity.value}&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(showTemperature);
 }
@@ -38,7 +45,7 @@ function showTemperature(response) {
   cTemperature = Math.round(response.data.main.temp);
   let weatherDescription = response.data.weather[0].description;
   let weatherIcon = response.data.weather[0].icon;
-  let windSpeed = response.data.wind.speed;
+  let windSpeed = Math.round(response.data.wind.speed);
   let humidity = response.data.main.humidity;
   let city = response.data.name;
   let heading = document.querySelector("#city-name");
@@ -53,7 +60,7 @@ function showTemperature(response) {
     "src",
     `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`
   );
-  windSpeedData.innerHTML = `${windSpeed} km/h`;
+  windSpeedData.innerHTML = `${windSpeed} mph`;
   humidityData.innerHTML = `${humidity}%`;
   heading.innerHTML = city;
   getForecast(response.data.coord);
@@ -61,7 +68,7 @@ function showTemperature(response) {
 
 function getForecast(coordinates) {
   let apiKey = "5515460eda5af0ed162ca73d5a84293d";
-  let unit = "metric";
+  let unit = "imperial";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(displayForecast);
   console.log(apiUrl);
@@ -79,7 +86,7 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row forecast">`;
   forecast.forEach(function (forecastDay, index) {
-    if (index < 6) {
+    if ((index > 0) & (index < 6)) {
       forecastHTML =
         forecastHTML +
         `<div class="col day-forecast">
@@ -91,9 +98,9 @@ function displayForecast(response) {
             <br>
            <span class="high-temp" id="forecast-high-temp">${Math.round(
              forecastDay.temp.max
-           )}°C</span> | <span class="low-temp" id="forecast-low-temp">${Math.round(
+           )}°F</span> | <span class="low-temp" id="forecast-low-temp">${Math.round(
           forecastDay.temp.min
-        )}°C</span>
+        )}°F</span>
             <br>
           </div>`;
     }
@@ -117,7 +124,7 @@ function handlePosition(position) {
   let lat = position.coords.latitude;
   let long = position.coords.longitude;
   let apiKey = "5515460eda5af0ed162ca73d5a84293d";
-  let unit = "metric";
+  let unit = "imperial";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(showTemperature);
 }
@@ -131,12 +138,13 @@ function convertToF(event) {
   temperatureH2.innerHTML = `${fTemperature}`;
 }
 
-function revertToC(event) {
+function convertToC(event) {
   event.preventDefault();
-  let temperatureH2 = document.querySelector("#day-zero-temperature");
-  cConversion.classList.add("active");
-  fConversion.classList.remove("active");
-  temperatureH2.innerHTML = cTemperature;
+  let currentCity = document.querySelector("#current-city");
+  let apiKey = "5515460eda5af0ed162ca73d5a84293d";
+  let unit = "imperial";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${currentCity.value}&appid=${apiKey}&units=${unit}`;
+  axios.get(apiUrl).then(showTemperature);
 }
 
 let fConversion = document.querySelector("#f-conversion");
@@ -145,4 +153,6 @@ fConversion.addEventListener("click", convertToF);
 let cTemperature = null;
 
 let cConversion = document.querySelector("#c-conversion");
-cConversion.addEventListener("click", revertToC);
+cConversion.addEventListener("click", convertToC);
+
+search("Atlanta");
