@@ -46,12 +46,6 @@
   border: solid 2px #f8fbfb;
 }
 
-button.geolocate-button {
-  margin: 10px auto;
-  font-size: 13px;
-  border-radius: 3px;
-}
-
 .open-source {
   font-size: 10px;
   margin: 0 auto;
@@ -99,4 +93,8 @@ a:hover {
 
 .hidden {
   display: none;
+}
+
+.last-updated {
+  font-size: 14px;
 }
